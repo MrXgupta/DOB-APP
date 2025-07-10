@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.use(
     cors({
         origin: [
-            "https://dob-app.onrender.com",
+            "https://dob-app-sigma.vercel.app",
             "http://localhost:5173",
         ],
     })
