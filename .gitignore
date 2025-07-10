@@ -1,0 +1,30 @@
+# Node.js
+node_modules/
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Mac
+.DS_Store
+
+client/node_modules
+server/.env
+server/node_modules
+server/uploads
+DOB DATA.csv
+.idea
