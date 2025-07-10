@@ -22,7 +22,7 @@ export default function App() {
         const formData = new FormData();
         formData.append("file", file);
         try {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URl}/api/upload-csv`, { method: "POST", body: formData });
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/upload-csv`, { method: "POST", body: formData });
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Upload failed");
             Swal.fire({ icon: "success", title: "Uploaded", text: `${data.inserted} employees added.` });
@@ -38,13 +38,15 @@ export default function App() {
         e.preventDefault();
         const form = e.target;
         const payload = {
-            code: form.code.value.trim(),
+            sNo: form.sNo.value.trim() ? Number(form.sNo.value.trim()) : null,
             name: form.name.value.trim(),
+            area: form.area.value.trim(),
+            hq: form.hq.value.trim(),
             dob: form.dob.value,
-            mobileNo: form.mobile.value.trim(),
+            communicationAddress: form.communicationAddress.value.trim(),
         };
-        if (!payload.code || !payload.name) {
-            return Swal.fire({ icon: "warning", title: "Missing Fields", text: "Code and Name are required." });
+        if (!payload.name) {
+            return Swal.fire({ icon: "warning", title: "Missing Fields", text: "Name is required." });
         }
         try {
             const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/add-employee`, {

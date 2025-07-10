@@ -31,7 +31,7 @@ const UploadCSV = ({loadingUpload, handleCSVUpload}) => {
                 />
                 <p className="text-xs text-slate-400 mt-2">Please upload a CSV in the correct format.</p>
                 <a
-                    href="/DOB DATA.csv"
+                    href="/example.csv"
                     download
                     className="inline-block mt-2 px-3 py-1 text-sm rounded bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-medium transition"
                 >
