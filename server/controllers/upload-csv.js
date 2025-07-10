@@ -1,6 +1,6 @@
 const csv = require("csv-parser");
 const fs = require("fs");
-const Employee = require("../models/Employee");
+const Employee = require("../models/employee");
 
 const uploadCSV = async (req, res) => {
     if (!req.file) {
