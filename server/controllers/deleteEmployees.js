@@ -1,4 +1,4 @@
-const Employee = require("../models/Employee");
+const Employee = require("../models/employee");
 
 // Delete ALL employees
 const deleteAllEmployees = async (req, res) => {
