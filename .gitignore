@@ -26,5 +26,4 @@ client/node_modules
 server/.env
 server/node_modules
 server/uploads
-DOB DATA.csv
 .idea
