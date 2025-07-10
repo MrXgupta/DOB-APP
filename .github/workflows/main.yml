@@ -3,8 +3,8 @@ name: Send Birthday Emails
 on:
   workflow_dispatch:
   schedule:
-    # 5pm IST -> 11:30am UTC
-    - cron: '30 11 * * *'
+    # 6pm IST -> 12:30pm UTC
+    - cron: '30 12 * * *'
     # 11am IST -> 5:30am UTC
     - cron: '30 5 * * *'
 
@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Show timestamp (for debug)
+        run: date -u
       - name: Call the API to send birthday emails
         run: |
           curl -X POST https://dob-app.onrender.com/api/send-birthday-emails
