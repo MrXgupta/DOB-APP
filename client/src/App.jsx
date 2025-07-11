@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import ShowEmployees from "./components/ShowEmployees";
 import AddSingleEmployee from "./components/AddSingleEmployee.jsx";
 import UploadCSV from "./components/UploadCSV.jsx";
+import UpcomingBirthdays from "./components/UpcomingBirthdays.jsx";
 
 export default function App() {
     const [employees, setEmployees] = useState([]);
@@ -10,8 +11,30 @@ export default function App() {
     const [loadingEmployees, setLoadingEmployees] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [upcomingBirthdays, setUpcomingBirthdays] = useState([]);
+    const [loadingUpcoming, setLoadingUpcoming] = useState(false);
 
     const pageSize = 10;
+
+
+    const getUpcomingBirthdays = async () => {
+        setLoadingUpcoming(true);
+        try {
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/upcoming-birthdays`);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || "Fetch failed");
+            setUpcomingBirthdays(data.birthdays || []);
+        } catch (err) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: err.message,
+            });
+        } finally {
+            setLoadingUpcoming(false);
+        }
+    };
+
 
     const handleCSVUpload = async (file) => {
         if (!file) return;
@@ -87,30 +110,39 @@ export default function App() {
 
     useEffect(() => {
         getEmployees();
+        getUpcomingBirthdays();
     }, []);
 
     return (
         <div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-slate-900 text-slate-100">
-            {/* Upload Section */}
+            {/* Upload & Add */}
             <section className="min-h-screen w-full flex flex-col items-center justify-center p-4 snap-start">
                 <UploadCSV
-                loadingUpload={loadingUpload}
-                handleCSVUpload={handleCSVUpload}
+                    loadingUpload={loadingUpload}
+                    handleCSVUpload={handleCSVUpload}
                 />
-
-                {/* Add Single Employee */}
-                <AddSingleEmployee handleAddEmployee={handleAddEmployee}/>
+                <AddSingleEmployee handleAddEmployee={handleAddEmployee} />
             </section>
 
-            {/* Employee List Section */}
-            <ShowEmployees
-            employees={employees}
-            getEmployees={getEmployees}
-            loadingEmployees={loadingEmployees}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            />
+            {/* Upcoming Birthdays */}
+            <section className="h-screen w-full flex items-center justify-center p-4 snap-start">
+                <UpcomingBirthdays birthdays={upcomingBirthdays} loading={loadingUpcoming} />
+            </section>
+
+
+
+            {/* Employee List */}
+            <section className="min-h-screen w-full flex flex-col items-center justify-center p-4 snap-start">
+                <ShowEmployees
+                    employees={employees}
+                    getEmployees={getEmployees}
+                    loadingEmployees={loadingEmployees}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    pageSize={pageSize}
+                />
+            </section>
         </div>
+
     );
 }

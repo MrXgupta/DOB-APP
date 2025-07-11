@@ -45,6 +45,7 @@ const AddSingleEmployee = ({ handleAddEmployee }) => {
                 >
                     Add Employee
                 </button>
+
             </form>
         </div>
     );

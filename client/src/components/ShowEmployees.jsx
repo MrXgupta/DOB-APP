@@ -89,7 +89,7 @@ const ShowEmployees = ({
 
     return (
         <section className="min-h-screen w-full flex flex-col items-center justify-start p-4 snap-start">
-            <div className="w-full bg-slate-800 rounded-lg p-4 shadow-lg">
+            <div className="w-full bg-slate-800 rounded-lg p-6 shadow-lg">
                 {/* HEADER */}
                 <div className="flex justify-between items-center mb-3">
                     <h2 className="text-xl font-medium text-cyan-300">Employee List</h2>
@@ -148,13 +148,13 @@ const ShowEmployees = ({
                                 </thead>
                                 <tbody>
                                 {employees.map((emp) => (
-                                    <tr key={emp._id} className="border-t border-slate-700">
+                                    <tr key={emp._id} className="border-t border-slate-700 hover:bg-slate-500 hover:bg-opacity-10">
                                         {fieldLabels.map(({ key }) => (
                                             <td key={key} className="px-2 py-1 text-center">
                                                 {formatValue(key, emp[key])}
                                             </td>
                                         ))}
-                                        <td className="px-2 py-1 text-center">
+                                        <td className="p-2 text-center">
                                             <button
                                                 onClick={() => handleDeleteOne(emp._id)}
                                                 className="text-red-400 hover:text-red-500 text-xs"
