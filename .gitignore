@@ -25,5 +25,5 @@ pids
 client/node_modules
 server/.env
 server/node_modules
-server/uploads
+server/assets
 .idea

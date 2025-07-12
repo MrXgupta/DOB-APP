@@ -44,7 +44,7 @@ const generateBirthdayTiles = (employee) => {
 <table cellspacing="0" cellpadding="0" border="0" width="540" style="border-radius:12px; overflow:hidden; background:url('https://5.imimg.com/data5/SELLER/Default/2024/8/443611750/WR/PQ/UP/215035880/dhoop-batti-fragrance-1000x1000.jpg') center center / cover no-repeat; margin:0 auto 24px auto;">
   <tr>
     <td style="background: rgba(0,0,0,0.6); padding:40px 20px; text-align:center;">
-      <img src="https://i.ibb.co/p6j05wr3/download.png" width="80" height="80" style="border-radius:50%; border:2px solid #fff; margin-bottom:20px;">
+      <img src="https://scontent.fdel1-2.fna.fbcdn.net/v/t39.30808-6/217712499_124779689831072_8572648569165534497_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=sOlTWxoypcMQ7kNvwG8W-yE&_nc_oc=AdmhW1_e1n4C0WsH-7uxk3vt7Ij-PTk-YqO2T_nX3_-vS1lrUPS05S-3MfDLf_0lpXQ&_nc_zt=23&_nc_ht=scontent.fdel1-2.fna&_nc_gid=jUCPSPZgGK-sbRnT9NDKVQ&oh=00_AfSuky-9LE0iYuWLDLU7o5EyuqEqhVsT3RFMrzJPoNDUaQ&oe=68781403" width="80" height="80" style="border-radius:50%; border:2px solid #fff; margin-bottom:20px;">
       <h2 style="margin:0;font-size:24px;color:#fff;line-height:1.4;">${employee.name}</h2>
       <p style="font-size:18px;color:#fff;margin:20px 0;max-width:400px;line-height:1.5;margin-left:auto;margin-right:auto;">${msg}</p>
       <p style="font-size:14px;color:#fff;opacity:0.85;margin:0;">Kuber Grains & Spices Pvt. Ltd.</p>
