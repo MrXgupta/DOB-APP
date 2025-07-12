@@ -1,5 +1,7 @@
 const Employee = require("../models/employee");
 const nodemailer = require("nodemailer");
+const path = require("path");
+const logo = path.join(__dirname, "../assets/download.png");
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -11,49 +13,59 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-
 const formatRow = (label, value) => {
     if (!value) return "";
     return `<li><strong>${label}:</strong> ${value}</li>`;
 };
 
-const generateBirthdayMessages = (employee) => {
-    const name = employee.name || "the employee";
-    return [
-        `🎉 Happy Birthday, ${name}! On behalf of everyone at Kuber Grains & Spices Pvt. Ltd., we wish you a fantastic year ahead filled with success, health, and happiness. May all your dreams come true and your efforts continue to bring you well-deserved recognition and growth. Have a truly wonderful celebration!`,
 
-        `🎂 Dear ${name}, many happy returns of the day! May this birthday bring you immense joy, beautiful memories, and renewed energy for all your endeavors. Your dedication and hard work are truly valued by the entire team at Kuber Grains & Spices Pvt. Ltd. Wishing you all the best today and always. Happy Birthday!`,
-
-        `🥳 Wishing you a very Happy Birthday, ${name}! May this special day be filled with love, laughter, and cherished moments with your loved ones. Thank you for your remarkable contributions and commitment. We at Kuber Grains & Spices Pvt. Ltd. appreciate you greatly and wish you a prosperous, fulfilling year ahead. Enjoy your day to the fullest!`
+const generateBirthdayTiles = (employee) => {
+    const messages = [
+        "🎉 Wishing you a wonderful birthday filled with joy, laughter, and prosperity.",
+        "🎂 May your special day be surrounded by love and bring you success and happiness.",
+        "🥳 Happy Birthday! May this year be your best one yet, with blessings in all you do."
     ];
+
+    return messages
+        .map(
+            (msg) => `
+<table cellspacing="0" cellpadding="0" border="0" width="540" style="border-radius:12px; overflow:hidden; background:url('https://5.imimg.com/data5/SELLER/Default/2024/8/443611750/WR/PQ/UP/215035880/dhoop-batti-fragrance-1000x1000.jpg') center center / cover no-repeat; margin:0 auto 24px auto;">
+  <tr>
+    <td style="background: rgba(0,0,0,0.6); padding:40px 20px; text-align:center;">
+      <img src="https://scontent.fdel1-2.fna.fbcdn.net/v/t39.30808-6/217712499_124779689831072_8572648569165534497_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=sOlTWxoypcMQ7kNvwG8W-yE&_nc_oc=AdmhW1_e1n4C0WsH-7uxk3vt7Ij-PTk-YqO2T_nX3_-vS1lrUPS05S-3MfDLf_0lpXQ&_nc_zt=23&_nc_ht=scontent.fdel1-2.fna&_nc_gid=jUCPSPZgGK-sbRnT9NDKVQ&oh=00_AfSuky-9LE0iYuWLDLU7o5EyuqEqhVsT3RFMrzJPoNDUaQ&oe=68781403" width="80" height="80" style="border-radius:50%; border:2px solid #fff; margin-bottom:20px;">
+      <h2 style="margin:0;font-size:24px;color:#fff;line-height:1.4;">${employee.name}</h2>
+      <p style="font-size:18px;color:#fff;margin:20px 0;max-width:400px;line-height:1.5;margin-left:auto;margin-right:auto;">${msg}</p>
+      <p style="font-size:14px;color:#fff;opacity:0.85;margin:0;">Kuber Grains & Spices Pvt. Ltd.</p>
+    </td>
+  </tr>
+</table>
+`
+        )
+        .join("");
 };
 
 
+// Email HTML content
 const formatBirthdayMessage = (employee, when) => {
-    const dojFormatted = employee.doj ? new Date(employee.doj).toLocaleDateString() : null;
     const dobFormatted = employee.dob ? new Date(employee.dob).toLocaleDateString() : null;
-    const messages = generateBirthdayMessages(employee);
 
     return `
   <p>Dear HR,</p>
   <p>This is a reminder that <strong>${employee.name}</strong> has a birthday ${when}.</p>
   <ul>
+    ${formatRow("Serial No", employee.sNo)}
     ${formatRow("Name", employee.name)}
-    ${formatRow("Gender", employee.gender)}
-    ${formatRow("Date of Joining", dojFormatted)}
-    ${formatRow("Designation", employee.designation)}
     ${formatRow("Area", employee.area)}
+    ${formatRow("HQ", employee.hq)}
     ${formatRow("Date of Birth", dobFormatted)}
-    ${formatRow("Mobile", employee.mobileNo)}
-    ${formatRow("Office Mobile", employee.officeMobile)}
     ${formatRow("Communication Address", employee.communicationAddress)}
   </ul>
-  <p><strong>Suggested Birthday Messages:</strong></p>
-  <ol>
-    ${messages.map(msg => `<li>${msg}</li>`).join("")}
-  </ol>
+  <p><strong>Below are 3 pre-designed birthday wishes you can share:</strong></p>
+  ${generateBirthdayTiles(employee)}
+  <p>Simply use Snipping Tool to capture any of the cards you prefer.</p>
   `;
 };
+
 
 const sendBirthdayEmails = async (req, res) => {
     try {
@@ -73,6 +85,7 @@ const sendBirthdayEmails = async (req, res) => {
             return res.json({ message: "No birthdays today or tomorrow." });
         }
 
+
         for (const emp of todayBirthdays) {
             await transporter.sendMail({
                 from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
@@ -82,6 +95,7 @@ const sendBirthdayEmails = async (req, res) => {
             });
         }
 
+        // Tomorrow's birthdays
         for (const emp of tomorrowBirthdays) {
             await transporter.sendMail({
                 from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
