@@ -8,6 +8,7 @@ const getEmployee = require("../controllers/getEmployee")
 const { deleteAllEmployees, deleteOneEmployee } = require("../controllers/deleteEmployees");
 const { sendBirthdayEmails } = require("../controllers/birthdayReminderController");
 const { getUpcomingBirthdays } = require("../controllers/employeeController");
+const { getEmailLogs } = require("../controllers/emailLogs");
 
 router.post("/add-employee", addEmployee);
 router.post("/upload-csv", upload.single("file"), uploadCSV);
@@ -16,5 +17,6 @@ router.delete("/delete-all", deleteAllEmployees);
 router.delete("/delete-one", deleteOneEmployee);
 router.post("/send-birthday-emails", sendBirthdayEmails);
 router.get("/upcoming-birthdays", getUpcomingBirthdays);
+router.get("/email-logs", getEmailLogs);
 
 module.exports = router;

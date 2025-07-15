@@ -40,29 +40,37 @@ const UpcomingBirthdays = ({ birthdays, loading }) => {
 
             {!loading && birthdays.length > 0 && (
                 <ul className="grid grid-cols-1 gap-2 overflow-y-auto pr-2 flex-1 scrollbar-hide">
-                    {birthdays.map((emp) => (
-                        <li
-                            key={emp._id}
-                            className="bg-slate-700 p-3 rounded flex flex-col md:flex-row md:items-center md:justify-between"
-                        >
-                            <div>
-                                <p className="text-cyan-200 font-medium">{emp.name}</p>
-                                <p className="text-slate-400 text-sm">
-                                    DOB:{" "}
-                                    {new Date(emp.dob).toLocaleDateString(undefined, {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                    })}
-                                </p>
-                            </div>
-                            {emp.area && (
-                                <p className="text-slate-300 text-sm mt-1 md:mt-0">
-                                    Area: {emp.area}
-                                </p>
-                            )}
-                        </li>
-                    ))}
+                    {birthdays
+                        .slice()
+                        .sort((a, b) => {
+                            const dayA = new Date(a.dob).getDate();
+                            const dayB = new Date(b.dob).getDate();
+                            return dayA - dayB;
+                        })
+                        .map((emp) => (
+                            <li
+                                key={emp._id}
+                                className="bg-slate-700 p-3 rounded flex flex-col md:flex-row md:items-center md:justify-between"
+                            >
+                                <div>
+                                    <p className="text-cyan-200 font-medium">{emp.name}</p>
+                                    <p className="text-slate-400 text-sm">
+                                        DOB:{" "}
+                                        {new Date(emp.dob).toLocaleDateString(undefined, {
+                                            day: "2-digit",
+                                            month: "short",
+                                            year: "numeric",
+                                        })}
+                                    </p>
+                                </div>
+                                {emp.area && (
+                                    <p className="text-slate-300 text-sm mt-1 md:mt-0">
+                                        Area: {emp.area}
+                                    </p>
+                                )}
+                            </li>
+                        ))}
+
                 </ul>
             )}
         </div>

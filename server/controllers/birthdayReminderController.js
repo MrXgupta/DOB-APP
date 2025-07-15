@@ -1,7 +1,7 @@
 const Employee = require("../models/employee");
 const nodemailer = require("nodemailer");
 const path = require("path");
-const logo = path.join(__dirname, "../assets/download.png");
+const EmailLog = require("../models/emailLog");
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -78,8 +78,8 @@ const formatBirthdayMessage = (employee, when) => {
   `;
 };
 
-
 const sendBirthdayEmails = async (req, res) => {
+    const logRecipients = [];
     try {
         const today = new Date();
         const tomorrow = new Date();
@@ -98,24 +98,79 @@ const sendBirthdayEmails = async (req, res) => {
         }
 
 
+        const EmailLog = require("../models/EmailLog");
+
+        const logRecipients = [];
+
+// Today's birthdays
         for (const emp of todayBirthdays) {
-            await transporter.sendMail({
-                from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
-                to: process.env.EMAIL_TO_HR,
-                subject: `🎂 Birthday Today: ${emp.name}`,
-                html: formatBirthdayMessage(emp, "today"),
-            });
+            try {
+                await transporter.sendMail({
+                    from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
+                    to: process.env.EMAIL_TO_HR,
+                    subject: `🎂 Birthday Today: ${emp.name}`,
+                    html: formatBirthdayMessage(emp, "today"),
+                });
+
+                logRecipients.push({
+                    name: emp.name,
+                    email: process.env.EMAIL_TO_HR,
+                    dob: emp.dob,
+                    area: emp.area,
+                    birthdayType: "today",
+                    status: "success"
+                });
+            } catch (error) {
+                console.error(`Error sending email for ${emp.name}:`, error);
+                logRecipients.push({
+                    name: emp.name,
+                    email: process.env.EMAIL_TO_HR,
+                    dob: emp.dob,
+                    area: emp.area,
+                    birthdayType: "today",
+                    status: "failure",
+                    errorMessage: error.message
+                });
+            }
         }
 
-        // Tomorrow's birthdays
+// Tomorrow's birthdays
         for (const emp of tomorrowBirthdays) {
-            await transporter.sendMail({
-                from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
-                to: process.env.EMAIL_TO_HR,
-                subject: `🎂 Birthday Tomorrow: ${emp.name}`,
-                html: formatBirthdayMessage(emp, "tomorrow"),
-            });
+            try {
+                await transporter.sendMail({
+                    from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
+                    to: process.env.EMAIL_TO_HR,
+                    subject: `🎂 Birthday Tomorrow: ${emp.name}`,
+                    html: formatBirthdayMessage(emp, "tomorrow"),
+                });
+
+                logRecipients.push({
+                    name: emp.name,
+                    email: process.env.EMAIL_TO_HR,
+                    dob: emp.dob,
+                    area: emp.area,
+                    birthdayType: "tomorrow",
+                    status: "success"
+                });
+            } catch (error) {
+                console.error(`Error sending email for ${emp.name}:`, error);
+                logRecipients.push({
+                    name: emp.name,
+                    email: process.env.EMAIL_TO_HR,
+                    dob: emp.dob,
+                    area: emp.area,
+                    birthdayType: "tomorrow",
+                    status: "failure",
+                    errorMessage: error.message
+                });
+            }
         }
+
+        await EmailLog.create({
+            subject: "Daily Birthday Reminder Emails",
+            recipients: logRecipients
+        });
+
 
         res.json({
             message: "Emails sent.",

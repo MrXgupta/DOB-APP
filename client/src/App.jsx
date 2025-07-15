@@ -4,6 +4,7 @@ import ShowEmployees from "./components/ShowEmployees";
 import AddSingleEmployee from "./components/AddSingleEmployee.jsx";
 import UploadCSV from "./components/UploadCSV.jsx";
 import UpcomingBirthdays from "./components/UpcomingBirthdays.jsx";
+import EmailLogs from "./components/EmailLogs.jsx";
 
 export default function App() {
     const [employees, setEmployees] = useState([]);
@@ -142,7 +143,12 @@ export default function App() {
                     pageSize={pageSize}
                 />
             </section>
-        </div>
 
+            {/* Email Logs */}
+            <section className="min-h-screen w-full flex items-center justify-center p-4 snap-start">
+                <EmailLogs />
+            </section>
+
+        </div>
     );
 }
