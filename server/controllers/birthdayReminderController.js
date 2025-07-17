@@ -97,9 +97,6 @@ const sendBirthdayEmails = async (req, res) => {
             return res.json({ message: "No birthdays today or tomorrow." });
         }
 
-
-        const EmailLog = require("../models/EmailLog");
-
         const logRecipients = [];
 
 // Today's birthdays
