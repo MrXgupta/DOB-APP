@@ -1,6 +1,7 @@
 name: Send Birthday Emails
 
 on:
+  workflow_dispatch:
   schedule:
     # 6:00 AM IST -> 12:30 AM UTC
     - cron: '30 0 * * *'
