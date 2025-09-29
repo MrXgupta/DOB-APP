@@ -12,7 +12,8 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASSWORD,
     },
     debug: true,
-    logger: true
+    logger: true,
+    connectionTimeout: 5 * 60 * 1000
 });
 
 const generateBirthdayTiles = (employee) => {
